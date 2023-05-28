@@ -10,8 +10,6 @@
 ## Comandos:
 
 -  1- color  ("enlista y cambia colores"), ademas:
-             - color ls : Lista los colores permitidos o como cambiarlo
-             - color set COLOR : cambia el color
 -  2- linea(A,B) : (x1,y1),(x2,y2) Dibuja linea desde punto A a punto B
 -  3- undo  : Borra el ultimo trazo dibujado
 -  4- pixelSize  : grosor de la linea o del pixel con el que se dibuja
