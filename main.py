@@ -1,5 +1,7 @@
 #pylint: disable = E1101
 #pylint: disable = C0103
+#pylint: disable = W0621
+#pylint: disable = W0401
 
 '''
 Modulo main:
@@ -13,124 +15,114 @@ puede usar (que iran en un .txt)
 
 '''
 
-import pygame
+from dibuja import *
+from help import *
+from colores import *
 
-BLACK = (0,0,0)
-WHITE = (255,255,255)
-RED = (255,0,0)
-GREEN = (0,255,0)
-BLUE = (0,0,255)
-
-class Dibuja:
+def obtener_colores():
     '''
-    La clase contiene 3 metodos:
-
-    1. Dibujar recta(desde un punto A -> punto B)
-    mediante el uso de la ecuacion pendiente
-
-    2. Undo(borrar el ultimo trazo)
-
-    3. Aumentar el grosor de linea
     '''
-    def __init__(self):
-        self.width = 800
-        self.height = 600
-        self.surface = pygame.display.set_mode((self.width, self.height))
-        self.default_bg_color = BLACK
-        self.grosor_linea = 1
-        self.trazo_actual = []
-        self.historial_trazos = []
-        self.line_color = (255, 120, 10)
+    lista_colores = {'ROJO': (255, 0, 0),
+                     'VERDE': (0, 255, 0), 
+                     'AZUL': (0, 0, 255),
+                     'AMARILLO': (255, 241, 61), 
+                     'ROSA': (253, 64, 222), 
+                     'NARANJA': (234, 141, 59), 
+                     'BLANCO': (255, 255, 255), 
+                     'NEGRO': (0, 0, 0)}
+    print("Colores disponibles: ")
+    for color in lista_colores:
+        print(color)
 
-    def draw_pendiente(self, point_a, point_b):
-        '''
-            Pendiente por comentar       
-        '''
-        dx = point_b[0] - point_a[0]
-        dy = point_b[1] - point_a[1]
-        steps = max(abs(dx), abs(dy))
-        x_increment = dx / steps if steps != 0 else 0
-        y_increment = dy / steps if steps != 0 else 0
 
-        x = point_a[0]
-        y = point_a[1]
-        for _ in range(steps):
-            x += x_increment
-            y += y_increment
-            self.trazo_actual.append((int(x), int(y)))
 
-        pygame.draw.lines(self.surface, self.line_color,
-                          False, self.trazo_actual, self.grosor_linea)
-        pygame.display.flip()
 
-    def borrar_ultimo_trazo(self):
-        '''
-        Este metodo lo primero que hace
-        es verificar si hay algun trazo
-        en el historial(puesto que es un
-        arreglo y lo declaramos vacio en el init)
-
-        Despues rellena la pantalla con el color
-        ya predeterminado en el init nuevamente
-        '''
-        if self.historial_trazos:
-            self.surface.fill(self.default_bg_color)
-            self.historial_trazos.pop()
-            for trazo in self.historial_trazos:
-                pygame.draw.lines(self.surface, self.line_color, False, trazo, self.grosor_linea)
-            pygame.display.flip()
-
-    def aumentar_grosor(self, increase):
-        '''
-        Lo que hace este metodo
-        es llamar a la propiedad
-        grosor_linea y asignarle como
-        parametro increase, increase
-        es un parametro que sera
-        dado desde el archivo de txt
-        '''
-        self.grosor_linea += increase
-        self.surface.fill(self.default_bg_color)
-        for trazo in self.historial_trazos: # busca los trazos restantes en el historial
-            pygame.draw.lines(self.surface, self.line_color, False, trazo, self.grosor_linea)
-        pygame.display.flip()
-
-linea1 = Dibuja()
-linea2 = Dibuja()
-linea3 = Dibuja()
+linea = Dibuja()
+figura = Dibuja()
 
 myfile = open("comandos.cmd.txt", "r", encoding="utf8")
 for cmd in myfile:
     cmd = cmd.strip()
+    if cmd.startswith("/help"):
+        imprimir_help()
+    # Cuadrado
+    if cmd.startswith("dibujar_cuadrado"):
+        _, x, y, lado = cmd.split()
+        x = int(x)
+        y = int(y)
+        lado = int(lado)
+
+        figura.dibujar_cuadrado(x, y, lado)
+
+    # Pendiente
     if cmd.startswith("draw_pendiente"):
         j, a, b = cmd.split()
         x1, y1 = map(int, a.split(","))
         x2, y2 = map(int, b.split(","))
 
-        # Dibujo de objetos:
-        linea1.draw_pendiente((x1, y1), (x2, y2))
-        linea1.historial_trazos.append(linea1.trazo_actual.copy())
-        linea1.trazo_actual.clear()
-        linea2.draw_pendiente((x1, y1), (x2, y2))
-        linea2.historial_trazos.append(linea2.trazo_actual.copy())
-        linea2.trazo_actual.clear()
+        linea.draw_pendiente((x1, y1), (x2, y2))
+        linea.historial_trazos.append(linea.trazo_actual.copy())
+        linea.trazo_actual.clear()
 
-        linea3.draw_pendiente((x1, y1), (x2, y2))
-        linea3.historial_trazos.append(linea3.trazo_actual.copy())
-        linea3.trazo_actual.clear()
+    # Undo
+    if cmd == "borrar_ultimo_trazo":
+        linea.borrar_ultimo_trazo()
 
-    elif cmd == "borrar_ultimo_trazo":
-        linea1.borrar_ultimo_trazo()
+    # Circulo
+    if cmd.startswith("dibujar_circulo"):
+        _, centro_x, centro_y, radio = cmd.split()
+        centro_x = int(centro_x)
+        centro_y = int(centro_y)
+        radio = int(radio)
 
-    elif cmd.startswith("aumentar_grosor"):
+        figura.dibujar_circulo(centro_x, centro_y, radio)
+
+
+    if cmd.startswith("aumentar_grosor"):
         j, inc = cmd.split()
         incremento = int(inc)
-        linea1.aumentar_grosor(incremento)
-    print(f" -{cmd}-")
+        linea.aumentar_grosor(incremento)
+
+    if cmd.startswith("dibujar_rectangulo"):
+        _, x, y, ancho, alto = cmd.split()
+        x = int(x)
+        y = int(y)
+        ancho = int(ancho)
+        alto = int(alto)
+
+        figura.dibujar_rectangulo(x, y, ancho, alto)
+
+    if cmd.startswith("dibujar_triangulo_equilatero"):
+        _, x, y, lado = cmd.split()
+        x = int(x)
+        y = int(y)
+        lado = int(lado)
+        figura.dibujar_triangulo_equilatero(x, y, lado)
+
+    if cmd.startswith("dibujar_triangulo_escaleno"):
+        _, x1, y1, x2, y2, x3, y3 = cmd.split()
+        x1 = int(x1)
+        y1 = int(y1)
+        x2 = int(x2)
+        y2 = int(y2)
+        x3 = int(x3)
+        y3 = int(y3)
+
+        figura.dibujar_triangulo_escaleno(x1, y1, x2, y2, x3, y3)
+
+    if cmd.startswith("dibujar_triangulo_isosceles"):
+        _, x1, y1, x2, y2, base = cmd.split()
+        x1 = int(x1)
+        y1 = int(y1)
+        x2 = int(x2)
+        y2 = int(y2)
+        base = int(base)
+
+        figura.dibujar_triangulo_isosceles(x1, y1, x2, y2, base)
+    if cmd.startswith("colores ls"):
+        obtener_colores()
 myfile.close()
 
-
-# Para que corra el programa
 RUN = True
 while RUN:
     for event in pygame.event.get():
@@ -139,3 +131,4 @@ while RUN:
     pygame.display.update()
 
 pygame.quit()
+
