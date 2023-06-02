@@ -35,7 +35,12 @@ class Dibuja:
 
     def draw_pendiente(self, point_a, point_b):
         '''
-        
+        El metodo toma un punto A y un punto B,
+        va registrando cuanto va incrementado
+        tanto x como y segun las coordenadas
+        proporcionadas, es decir, va dibujando
+        sub-puntos por asi decirlo, hasta
+        cubrir un intervalo de [a,b]
         '''
         dx = point_b[0] - point_a[0]
         dy = point_b[1] - point_a[1]
@@ -81,6 +86,12 @@ class Dibuja:
         pygame.display.flip()
 
     def dibujar_cuadrado(self, x, y, lado):
+        '''
+        El metodo toma las cordenadas
+        en que se desea dibujar y
+        el lado para poder dibujar
+        el cuadrado
+        '''
         punto1 = (x, y)
         punto2 = (x + lado, y)
         punto3 = (x + lado, y + lado)
@@ -94,6 +105,14 @@ class Dibuja:
         pygame.display.flip()
 
     def dibujar_circulo(self, centro_x, centro_y, radio):
+        '''
+        esta función dibuja un círculo 
+        utilizando una lista de puntos
+        inicialmente establezidos en un
+        arreglo vacio. Estos son
+        calculados a partir del centro y 
+        el radio del círculo
+        '''
         puntos_circulo = []
         angulo = 0
         # Ajusta la precisión del círculo cambiando el número de puntos
@@ -174,7 +193,11 @@ class Dibuja:
 
     def dibujar_triangulo_isosceles(self, x1, y1, x2, y2, base):
         '''
-        
+        El metodo al traar una linea o un lado
+        del triangulo, lo almacena en la propiedad
+        historial de trazos y va actualizando
+        la propiedad trazo actual para el lado
+        que sigue.
         '''
         # Dibuja los lados iguales
         self.draw_pendiente((x1, y1), (x2, y2))
