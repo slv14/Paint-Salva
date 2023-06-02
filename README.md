@@ -7,12 +7,25 @@
    predeterminadas, esto con la ayuda de una linea
    de comandos proporcionada por el desarrollador.
    
-## Comandos:
+## Requisitos:
 
--  1- color  ("enlista y cambia colores"), ademas:
--  2- linea(A,B) : (x1,y1),(x2,y2) Dibuja linea desde punto A a punto B
--  3- undo  : Borra el ultimo trazo dibujado
--  4- pixelSize  : grosor de la linea o del pixel con el que se dibuja
--  5- draw (cuadrado, rectangulo, circle)   : Dibuja la figura especificada apartir del punto (X,Y) proporcionado
--  6- draw triangulo (equilatero, escaleno, isosceles) : Dibuja el triangulo especificado apartir del punto (X,Y) proporcionado 
--  7- background COLOR : cambia el color del fondo
+- Tener python 3.6 o 3.11 instalado 
+   -  Python 3.6 (https://www.python.org/downloads/release/python-360/)
+   -  Python 3.11 (https://www.python.org/downloads/release/python-3110/)
+- Tener la libreria pygame instalada
+- Descargar el archivo de texto "comandos.cmd" (se encuentra arriba)
+- Descargar los archivos "main, dibuja & help"
+- Descarga Sublime Text 3 (https://www.sublimetext.com/3)
+   
+## Instrucciones de uso:
+
+- Una vez hayas descargado todo lo anterior, presiona con el click derecho
+al archivo main.py, da click en la opcion "Abrir con" y escoge "Sublime Text 3"
+
+- Ya que este abierto el archivo, presiona las teclas Ctrl + B, se te desplegara
+una pantalla con varias figuras, si tu deseas cambiar las coordenadas o el tamaño
+de las mismas:
+
+- Dirigete a tu archivo de texto "comandos.cmd", y modifca los PRIMEROS dos valores
+los cuales representan las coordenadas
+
