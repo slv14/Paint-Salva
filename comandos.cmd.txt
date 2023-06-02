@@ -1,0 +1,10 @@
+draw_pendiente 100,200 500,400
+draw_pendiente 600,50 100,150
+borrar_ultimo_trazo
+aumentar_grosor 1
+dibujar_circulo 600 400 100
+dibujar_cuadrado 100 300 200
+dibujar_triangulo_equilatero 400 200 100
+dibujar_triangulo_escaleno 500 300 600 200 700 400
+dibujar_triangulo_isosceles 200 200 300 300 150
+color ls
